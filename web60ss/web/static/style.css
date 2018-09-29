@@ -4,6 +4,7 @@
 }
 h1 {
     text-align: center;
+    margin-top: 1em;
 }
 .info {
     text-align: right;
@@ -26,4 +27,17 @@ table td:nth-child(1) {
 table td:nth-child(3) {
     width: 160px;
     text-align: center;
+}
+
+/* phone size */
+@media (max-width: 576px) {
+    h1 {
+        font-size: 2em;
+    }
+    table td:nth-child(2) {
+        width: 60%;
+    }
+    .audiojs {
+        width: 100%;
+    }
 }

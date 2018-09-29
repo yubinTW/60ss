@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}
+Jump
+{% endblock %}
+{% block content %}
+<form action="#" method="post" class="form-group">
+    {%csrf_token%}
+    <label for="pid">Podcast ID</label>
+    <input type="pid" name="pid" id="pid" class="form-control" placeholder="">
+    <button type="submit" class="btn btn-primary">Jump</button>
+    <button type="reset" class="btn">Clear</button>
+</form>
+{% endblock %}

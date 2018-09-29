@@ -1,0 +1,29 @@
+#content {
+    width: 90%;
+    margin: 0 auto;
+}
+h1 {
+    text-align: center;
+}
+.info {
+    text-align: right;
+}
+.audiojs {
+    display: block;
+    margin: 10px auto;
+}
+table th {
+    text-align: center;
+}
+table > tbody > tr {
+    cursor: pointer;
+}
+table td:nth-child(1) {
+    width: 55px;
+    text-align: center;
+}
+
+table td:nth-child(3) {
+    width: 160px;
+    text-align: center;
+}

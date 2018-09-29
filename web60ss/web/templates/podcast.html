@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}
+Podcast
+{% endblock %}
+{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/audiojs/1.0.1/audio.min.js"></script>
+<h1>{{item.title}}</h1>
+<a href="/">&larr;&nbsp;List</a>
+<div class="info">
+    
+    <a id="source" href="{{item.url}}" target="_blank">Source</a>
+    <span id="date">{{item.date}}</span>
+</div>
+
+<audio src="{{item.audio}}" preload="none"></audio>
+<div class="transcript">
+    {% autoescape off %}
+    {{item.transcript}}
+    {% endautoescape %}
+</div>
+
+{% endblock %}
+
+{% block self_javascript %}
+<script>
+audiojs.events.ready(function() {
+    var as = audiojs.createAll();
+});
+</script>
+{% endblock %}

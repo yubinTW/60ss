@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}
+Add From Url
+{% endblock %}
+{% block content %}
+<form action="#" method="post" class="form-group">
+    {%csrf_token%}
+    <label for="url">Url</label>
+    <input type="url" name="url" id="url" class="form-control" placeholder="">
+    <button type="submit" class="btn btn-success">Submit</button>
+    <button type="reset" class="btn">Clear</button>
+</form>
+{% endblock %}

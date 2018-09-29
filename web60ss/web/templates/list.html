@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}
+List
+{% endblock %}
+{% block content %}
+
+<table class="table table-bordered table-hover table-sm">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td pid={{item.id}}>{{item.id}}</td>
+            <td pid={{item.id}}>{{item.title}}</td>
+            <td pid={{item.id}}>{{item.date}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+        {% if items.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ items.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        {% endif %}
+        <li class="page-item active">
+            <span class="page-link">
+                {{items.number}}
+                <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        {% if items.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ items.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        {% endif %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ items.paginator.num_pages }}">Last</a>
+        </li>
+    </ul>
+</nav>
+
+
+{% endblock %}
+
+{% block self_javascript %}
+<script>
+
+document.querySelectorAll('table > tbody > tr').forEach( (tr) => {
+    tr.addEventListener('click', (e) => {
+        let pid = e.target.getAttribute('pid');
+        window.location.href = `podcast?id=${pid}`;
+    });
+});
+</script>
+{% endblock %}

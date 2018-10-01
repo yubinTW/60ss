@@ -36,6 +36,18 @@ def jump_view(request):
     else:
         return render(request, 'jump.html')
 
+def search(request):
+    if request.method == 'GET':
+        query = request.GET.get('query')
+        if query.isdigit():
+            result = Podcasts.objects.filter(id__contains=query).order_by(F('id').desc())    
+        else:
+            result = Podcasts.objects.filter(title__contains=query).order_by(F('id').desc())
+        context = {
+            'items': result
+        }
+        return render(request, 'list.html', context)
+
 def add_from_url(request):
     if request.method == 'POST':
         url = request.POST.get('url')

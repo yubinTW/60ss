@@ -11,7 +11,9 @@ Podcast
     <a id="source" href="{{item.url}}" target="_blank">Source</a>
     <span id="date">{{item.date}}</span>
 </div>
-
+{% if item.img %}
+<img src="{{item.img}}" alt="image of this podcast">
+{% endif %}
 <audio src="{{item.audio}}" preload="none"></audio>
 <div class="transcript">
     {% autoescape off %}

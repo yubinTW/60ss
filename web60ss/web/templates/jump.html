@@ -6,7 +6,7 @@ Jump
 <form action="#" method="post" class="form-group">
     {%csrf_token%}
     <label for="pid">Podcast ID</label>
-    <input type="pid" name="pid" id="pid" class="form-control" placeholder="">
+    <input type="pid" name="pid" id="pid" class="form-control" placeholder="" autocomplete="off">
     <button type="submit" class="btn btn-primary">Jump</button>
     <button type="reset" class="btn">Clear</button>
 </form>

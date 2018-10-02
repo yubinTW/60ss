@@ -8,3 +8,6 @@ class Podcasts(models.Model):
     audio = models.CharField(max_length=255)
     img = models.CharField(max_length=255,blank=True)
     transcript = models.TextField(blank=True)
+    
+    def __unicode__(self):
+        return self.name

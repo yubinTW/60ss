@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, re_path, include
 from .views import home_view, list_view, podcast_view
-from .views import read_data_from_json, add_from_url, jump_view, search
+from .views import add_from_url, jump_view, search, refresh
 
 urlpatterns = [
     path('', list_view, name='home'),
@@ -10,5 +10,5 @@ urlpatterns = [
     path('jump', jump_view, name='jump'),
     path('add', add_from_url, name='add_from_url'),
     path('search', search, name='search'),
-    path('read_data_from_json', read_data_from_json),
+    path('refresh', refresh, name='refresh')
 ]

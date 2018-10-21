@@ -6,6 +6,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 import requests
 from bs4 import BeautifulSoup
 from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 
 # Create your views here.
 def home_view(request):
@@ -52,62 +53,67 @@ def search(request):
 def add_from_url(request):
     if request.method == 'POST':
         url = request.POST.get('url')
-        r = requests.get(url.strip())
-        soup = BeautifulSoup(r.text, 'html.parser')
-        try:
-            tag = soup.find('h3', {"itemprop": "name", "class": True})
-            title = tag.text
-            # print(title)
-            tag = soup.find('span', {'itemprop': 'datePublished'})
-            date = tag.text
-            # print(date)
-            tag = soup.find('source', {"type": "audio/mp3", "src": True})
-            audio = tag.get("src")
-            # print(audio)
-            tag = soup.find('img', {"itemprop": "image", "src": True})
-            if tag != None:
-                img = tag.get("src")
-            else:
-                img = ''
-            # print(img)
-            tag = soup.find('div', {"class": "transcript__inner"})
-            transcript = ''
-            if tag != None:
-                for p in tag.find_all('p'):
-                    transcript += str(p)
-            # print(transcript)
-            p = Podcasts(
-                title=title,
-                url=url,
-                date=date,
-                audio=audio,
-                img=img,
-                transcript=transcript
-            )
-            p.save()
-        except AttributeError as ae:
-            pass
+        p = get_podcast_from_url(url)
+        p.save()
         return redirect('list')
     else:
         return render(request, 'add_from_url.html')
 
-def read_data_from_json(request):
-    module_dir = os.path.dirname(__file__)  # get current directory
-    file_path = os.path.join(module_dir, 'static/data.json')
-    f = open(file_path, 'r')
-    arr = json.loads(f.read())
-    print(len(arr))
-    for i in range(len(arr)-1, -1, -1):
-        p = Podcasts()
-        p.title = arr[i]['title']
-        p.url = arr[i]['url']
-        p.audio = arr[i]['audio']
-        p.img = arr[i]['img']
-        p.transcript = arr[i]['transcript']
-        p.date = arr[i]['date']
-        try:
+def get_podcast_page_all_link():
+    r = requests.get('https://www.scientificamerican.com/podcasts/')
+    soup = BeautifulSoup(r.text, 'html.parser')
+    atags = soup.select('a')
+    result = []
+    for tag in atags:
+        link = tag.get('href')
+        if link and link.startswith('https://www.scientificamerican.com/podcast/episode/'):
+            result.insert(0, link)
+    return result
+
+def get_podcast_from_url(url):
+    r = requests.get(url.strip())
+    soup = BeautifulSoup(r.text, 'html.parser')
+    try:
+        tag = soup.find('h3', {"itemprop": "name", "class": True})
+        title = tag.text
+        tag = soup.find('span', {'itemprop': 'datePublished'})
+        date = tag.text
+        tag = soup.find('source', {"type": "audio/mp3", "src": True})
+        audio = tag.get("src")
+        tag = soup.find('img', {"itemprop": "image", "src": True})
+        if tag != None:
+            img = tag.get("src")
+        else:
+            img = ''
+        tag = soup.find('div', {"class": "transcript__inner"})
+        transcript = ''
+        if tag != None:
+            for p in tag.find_all('p'):
+                transcript += str(p)
+        p = Podcasts(
+            title=title,
+            url=url,
+            date=date,
+            audio=audio,
+            img=img,
+            transcript=transcript
+        )
+        return p
+    except AttributeError as ae:
+        pass
+
+def refresh(request):
+    arr = []
+    for link in get_podcast_page_all_link():
+        result = Podcasts.objects.filter(url=link)
+        if len(result) == 0:
+            p = get_podcast_from_url(link)
             p.save()
-        except IntegrityError as ie:
-            print(p.title)
-            print(ie)
-    return redirect('/')
+            arr.append(link)
+        else:
+            pass
+    result = {
+        'msg': 'ok',
+        'adding_links': arr
+    }
+    return JsonResponse(result)

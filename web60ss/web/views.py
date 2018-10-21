@@ -5,6 +5,7 @@ from django.db.models import F
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 import requests
 from bs4 import BeautifulSoup
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 def home_view(request):
@@ -23,7 +24,7 @@ def list_view(request):
 
 def podcast_view(request):
     pid = request.GET.get('id')
-    podcast = Podcasts.objects.get(id=pid)
+    podcast = get_object_or_404(Podcasts, id=pid)
     context = {
         'item': podcast
     }

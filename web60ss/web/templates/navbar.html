@@ -6,7 +6,9 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="{% url 'jump' %}">Jump</a>
+        {% if request.user.is_superuser %}
         <a class="nav-item nav-link" href="{% url 'add_from_url' %}">Add</a>
+        {% endif %}
         <form class="navbar-form" role="search" method="GET" action="search">
           <div class="input-group">
               <input type="text" class="form-control" placeholder="Search" name="query" autocomplete="off">

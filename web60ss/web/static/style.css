@@ -16,6 +16,12 @@ h1 {
 .info {
     text-align: right;
 }
+audio {
+    display: block;
+    margin: 1em auto;
+    width: 50%;
+    min-width: 300px;
+}
 .audiojs {
     display: block;
     margin: 10px auto;

@@ -3,7 +3,7 @@
 Podcast
 {% endblock %}
 {% block content %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/audiojs/1.0.1/audio.min.js"></script>
+
 <h1>{{item.title}}</h1>
 <a href="/">&larr;&nbsp;List</a>
 <div class="info">
@@ -14,7 +14,7 @@ Podcast
 {% if item.img %}
 <img src="{{item.img}}" alt="image of this podcast">
 {% endif %}
-<audio src="{{item.audio}}" preload="none"></audio>
+<audio controls src="{{item.audio}}"></audio>
 <div class="transcript">
     {% autoescape off %}
     {{item.transcript}}
@@ -24,9 +24,5 @@ Podcast
 {% endblock %}
 
 {% block self_javascript %}
-<script>
-audiojs.events.ready(function() {
-    var as = audiojs.createAll();
-});
-</script>
+
 {% endblock %}
